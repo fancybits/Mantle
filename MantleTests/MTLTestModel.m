@@ -215,6 +215,60 @@ static NSUInteger modelVersion = 1;
 
 @end
 
+@implementation MTLURLSubclassModel
+
+- (instancetype)init {
+	self = [super init];
+	if (self == nil) return nil;
+	
+	self.otherURL = [NSURL URLWithString:@"http://github.com/Mantle/Mantle"];
+	return self;
+}
+
++ (NSValueTransformer *)JSONTransformerForKey:(NSString *)key {
+	return @{
+		// Not provided transformer for self.URL
+		@"otherURL": [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName],
+	}[key];
+}
+
+@end
+
+@implementation MTLUUIDModel
+
+- (instancetype)init {
+	self = [super init];
+	if (self == nil) return nil;
+	
+	self.UUID = [[NSUUID alloc] initWithUUIDString:@"4A275FBD-8217-4397-964B-403F4C2B8545"];
+	return self;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return [NSDictionary mtl_identityPropertyMapWithModel:self];
+}
+
+@end
+
+@implementation MTLUUIDSubclassModel
+
+- (instancetype)init {
+	self = [super init];
+	if (self == nil) return nil;
+	
+	self.otherUUID = [[NSUUID alloc] initWithUUIDString:@"593246D2-A290-43D5-9070-A299A489AE29"];
+	return self;
+}
+
++ (NSValueTransformer *)JSONTransformerForKey:(NSString *)key {
+	return @{
+		// Not provided transformer for self.UUID
+		@"otherUUID": [NSValueTransformer valueTransformerForName:MTLUUIDValueTransformerName],
+	}[key];
+}
+
+@end
+
 @implementation MTLBoolModel
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {

@@ -193,13 +193,50 @@ it(@"should fail to initialize if JSON dictionary validation fails", ^{
 	expect(@(error.code)).to(equal(@(MTLTestModelNameTooLong)));
 });
 
+it(@"should implicitly transform NSStrings to URLs", ^{
+	NSDictionary *values = @{
+		@"URL": @"http://github.com/1",
+		@"otherURL": @"http://github.com/2",
+	};
+	
+	NSError *error = nil;
+	MTLURLSubclassModel *model = [MTLJSONAdapter modelOfClass:MTLURLSubclassModel.class fromJSONDictionary:values error:&error];
+	expect(model.URL).to(equal([NSURL URLWithString:@"http://github.com/1"]));
+	expect(model.otherURL).to(equal([NSURL URLWithString:@"http://github.com/2"]));
+	expect(error).to(beNil());
+});
+
 it(@"should implicitly transform URLs", ^{
 	MTLURLModel *model = [[MTLURLModel alloc] init];
+	
+	NSError *error = nil;
+	NSDictionary *JSONDictionary = [MTLJSONAdapter JSONDictionaryFromModel:model error:&error];
+	
+	expect(JSONDictionary[@"URL"]).to(equal(@"http://github.com"));
+	expect(error).to(beNil());
+});
+
+
+it(@"should implicitly transform NSStrings to UUIDs", ^{
+	NSDictionary *values = @{
+		@"UUID": @"D278C472-6DC3-4EE1-A947-861E6AF311C3",
+		@"otherUUID": @"24E1E56A-3F37-4ECE-8310-931F6ACD401A",
+	};
+	
+	NSError *error = nil;
+	MTLUUIDSubclassModel *model = [MTLJSONAdapter modelOfClass:MTLUUIDSubclassModel.class fromJSONDictionary:values error:&error];
+	expect(model.UUID).to(equal([[NSUUID alloc] initWithUUIDString:@"D278C472-6DC3-4EE1-A947-861E6AF311C3"]));
+	expect(model.otherUUID).to(equal([[NSUUID alloc] initWithUUIDString:@"24E1E56A-3F37-4ECE-8310-931F6ACD401A"]));
+	expect(error).to(beNil());
+});
+
+it(@"should implicitly transform UUIDs", ^{
+	MTLUUIDModel *model = [[MTLUUIDModel alloc] init];
 
 	NSError *error = nil;
 	NSDictionary *JSONDictionary = [MTLJSONAdapter JSONDictionaryFromModel:model error:&error];
 
-	expect(JSONDictionary[@"URL"]).to(equal(@"http://github.com"));
+	expect(JSONDictionary[@"UUID"]).to(equal(@"4A275FBD-8217-4397-964B-403F4C2B8545"));
 	expect(error).to(beNil());
 });
 

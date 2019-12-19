@@ -383,9 +383,10 @@ NSString * const MTLJSONAdapterThrownExceptionErrorKey = @"MTLJSONAdapterThrownE
 		if ([modelClass respondsToSelector:@selector(JSONTransformerForKey:)]) {
 			NSValueTransformer *transformer = [modelClass JSONTransformerForKey:key];
 
-			if (transformer != nil) result[key] = transformer;
-
-			continue;
+			if (transformer != nil) {
+				result[key] = transformer;
+				continue;
+			}
 		}
 
 		objc_property_t property = class_getProperty(modelClass, key.UTF8String);
@@ -641,6 +642,10 @@ NSString * const MTLJSONAdapterThrownExceptionErrorKey = @"MTLJSONAdapterThrownE
 
 + (NSValueTransformer *)NSURLJSONTransformer {
 	return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
+}
+
++ (NSValueTransformer *)NSUUIDJSONTransformer {
+	return [NSValueTransformer valueTransformerForName:MTLUUIDValueTransformerName];
 }
 
 @end
