@@ -2,6 +2,7 @@
   "name": "Mantle",
   "summary": "Model framework for Cocoa and Cocoa Touch.",
   "homepage": "https://github.com/Mantle/Mantle",
+  "version": "2.2.0",
   "license": "MIT",
   "authors": {
     "Robert Böhnke": "robb@robb.is",
